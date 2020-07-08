@@ -19,7 +19,7 @@ function ThemeHeaderTemplate() {
 <?php } ?>
 
 	<meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=IE8" />
-	<link rel="stylesheet" href="//play.pokemonshowdown.com/style/font-awesome.css" />
+	<link rel="stylesheet" href="//<?php require dirname(__FILE__) . '/../routes.php'; echo $routes['client']; ?>/style/font-awesome.css" />
 	<link rel="stylesheet" href="/theme/panels.css?" />
 	<link rel="stylesheet" href="/theme/main.css?" />
 
@@ -48,13 +48,13 @@ ga('send', 'pageview');
 		<div class="header">
 			<ul class="nav">
 				<li><a class="button nav-first<?php if ($panels->tab === 'home') echo ' cur'; ?>" href="/"><img src="/images/pokemonshowdownbeta.png" alt="Pok&eacute;mon Showdown! (beta)" /> Home</a></li>
-				<li><a class="button" href="//dex.pokemonshowdown.com/">Pok&eacute;dex</a></li>
-				<li><a class="button" href="//replay.pokemonshowdown.com/">Replays</a></li>
+				<li><a class="button" href="//<?php require dirname(__FILE__) . '/../routes.php'; echo $routes['dex']; ?>/">Pok&eacute;dex</a></li>
+				<li><a class="button" href="//<?php require dirname(__FILE__) . '/../routes.php'; echo $routes['replays']; ?>/">Replays</a></li>
 				<li><a class="button<?php if ($panels->tab === 'ladder') echo ' cur'; ?>" href="/ladder/">Ladder</a></li>
 				<li><a class="button nav-last" href="/forums/">Forum</a></li>
 			</ul>
 			<ul class="nav nav-play">
-				<li><a class="button greenbutton nav-first nav-last" href="//play.pokemonshowdown.com/">Play</a></li>
+				<li><a class="button greenbutton nav-first nav-last" href="//<?php require dirname(__FILE__) . '/../routes.php'; echo $routes['client']; ?>/">Play</a></li>
 			</ul>
 			<div style="clear:both"></div>
 		</div>

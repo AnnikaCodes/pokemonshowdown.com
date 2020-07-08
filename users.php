@@ -5,6 +5,7 @@ ini_set('display_errors', TRUE);
 ini_set('display_startup_errors', TRUE);
 
 include_once 'config/config.inc.php';
+include_once 'routes.php';
 
 $ntbb_groups = array(
 	array(
@@ -96,7 +97,7 @@ if (@$_REQUEST['user']) {
 
 	if (substr($_SERVER['REQUEST_URI'], 0, 13) === '/users/?user=') {
 		// really wish this could be done with mod_rewrite
-		header('Location: https://pokemonshowdown.com/users/'.$userid);
+		header('Location: https://' . $routes['users'] . '/'.$userid);
 		die();
 	}
 
@@ -266,7 +267,7 @@ if (!$user) {
 				Use this link:
 			</p>
 			<p style="margin: 1em -13px">
-				<small><code>https://pokemonshowdown.com/resetpassword/<?php echo $token; ?></code></small>
+				<small><code>https://<?= $routes['root'] ?>/resetpassword/<?php echo $token; ?></code></small>
 			</p>
 		</div>
 <?php

@@ -46,13 +46,13 @@ function includeHeaderBottom() {
 		<div class="header"><div class="header-inner">
 			<ul class="nav">
 				<li><a class="button nav-first<?php curPage('home') ?>" href="/"><img src="/images/pokemonshowdownbeta.png" alt="Pok&eacute;mon Showdown! (beta)" /> Home</a></li>
-				<li><a class="button" href="//dex.pokemonshowdown.com/">Pok&eacute;dex</a></li>
-				<li><a class="button" href="//replay.pokemonshowdown.com/">Replays</a></li>
+				<li><a class="button" href="//<?php require dirname(__FILE__) . '/../routes.php'; echo $routes['dex'] ?>/">Pok&eacute;dex</a></li>
+				<li><a class="button" href="//<?php require dirname(__FILE__) . '/../routes.php'; echo $routes['replays'] ?>/">Replays</a></li>
 				<li><a class="button<?php curPage('ladder') ?>" href="/ladder/">Ladder</a></li>
 				<li><a class="button nav-last" href="/forums/">Forum</a></li>
 			</ul>
 			<ul class="nav nav-play">
-				<li><a class="button greenbutton nav-first nav-last" href="//play.pokemonshowdown.com/">Play</a></li>
+				<li><a class="button greenbutton nav-first nav-last" href="//<?php require dirname(__FILE__) . '/../routes.php'; echo $routes['client'] ?>/">Play</a></li>
 			</ul>
 			<div style="clear:both"></div>
 		</div></div>

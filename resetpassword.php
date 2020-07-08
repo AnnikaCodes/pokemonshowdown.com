@@ -2,6 +2,7 @@
 
 include 'style/wrapper.inc.php';
 include '../play.pokemonshowdown.com/lib/ntbb-session.lib.php';
+include_once 'routes.php';
 
 $page = 'resetpassword';
 $pageTitle = "Reset Password";
@@ -58,7 +59,7 @@ if (!$user) {
 		The password for <?php echo htmlspecialchars($user['username']); ?> was <strong>successfully changed</strong>!.
 	</p>
 	<p class="mainbutton">
-		<a class="button greenbutton" href="http://play.pokemonshowdown.com/">Play online</a>
+		<a class="button greenbutton" href="http://<?= $routes['client'] ?>/">Play online</a>
 	</p>
 <?php
 	} else {
