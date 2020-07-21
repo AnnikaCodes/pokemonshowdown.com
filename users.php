@@ -180,7 +180,7 @@ if (!$user) {
 		if ($csrfOk && isset($_POST['group'])) {
 			$group = intval($_POST['group']);
 			if ($group != 3 && $group != 4 && $group != 5 && $group != 6) $group = 1;
-			$psdb->query("UPDATE users SET \"group\" = ".intval($group)." WHERE userid = ".$psdb->escape($user['userid'])." LIMIT 1");
+			$psdb->query("UPDATE users SET \"group\" = ".intval($group)." WHERE userid = ? LIMIT 1", [$user['userid']]);
 			$user['group'] = $group;
 
 			$modlogentry = "Group changed to $group ({$groups[$group]['name']})";
