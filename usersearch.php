@@ -51,7 +51,7 @@ if (!$ip) {
 	if ($users->csrfCheck()) {
 		$csrfOk = true;
 	}
-	$userlist = $psdb->query("SELECT `username`, `userid`, `banstate` FROM `ntbb_users` WHERE `ip` = ?", [$ip]);
+	$userlist = $psdb->query("SELECT \"username\", \"userid\", \"banstate\" FROM \"ntbb_users\" WHERE \"ip\" = ?", [$ip]);
 	if ($csrfOk && isset($_POST['standing'])) {
 		$newStanding = intval($_POST['standing']);
 		$psdb->query("UPDATE ntbb_users SET banstate = ? WHERE ip = ? AND banstate != 100", [$newStanding, $ip]);
@@ -107,7 +107,7 @@ if (!$ip) {
 		<p>Login IP Matches</p>
 		<div class="ladder"><table>
 <?php
-	$loginlist = $psdb->query("SELECT `username`, `userid`, `ip`, `banstate` FROM `ntbb_users` WHERE `loginip` = ?", [$ip]);
+	$loginlist = $psdb->query("SELECT \"username\", \"userid\", \"ip\", \"banstate\" FROM \"ntbb_users\" WHERE \"loginip\" = ?", [$ip]);
 	foreach ($loginlist as $row) {
 		if ($row['ip'] != $ip) {
 ?>
@@ -124,7 +124,7 @@ if (!$ip) {
 		<p>Usermodlog entries</p>
 		<div class="ladder"><table>
 <?php
-	$usermodlog = $psdb->query("SELECT * FROM `ntbb_usermodlog` WHERE `ip` = '".$psdb->escape($ip)."'");
+	$usermodlog = $psdb->query("SELECT * FROM \"ntbb_usermodlog\" WHERE \"ip\" = ".$psdb->escape($ip)());
 	while ($row = $psdb->fetch($usermodlog)) {
 		$entry = $row['entry'];
 		$fromindex = strpos($entry, " from: ");

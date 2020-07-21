@@ -180,7 +180,7 @@ if (!$user) {
 		if ($csrfOk && isset($_POST['group'])) {
 			$group = intval($_POST['group']);
 			if ($group != 3 && $group != 4 && $group != 5 && $group != 6) $group = 1;
-			$psdb->query("UPDATE ntbb_users SET `group` = ".intval($group)." WHERE userid = '".$psdb->escape($user['userid'])."' LIMIT 1");
+			$psdb->query("UPDATE ntbb_users SET \"group\" = ".intval($group)." WHERE userid = ".$psdb->escape($user['userid'])." LIMIT 1");
 			$user['group'] = $group;
 
 			$modlogentry = "Group changed to $group ({$ntbb_groups[$group]['name']})";
@@ -218,7 +218,7 @@ if (!$user) {
 			);
 
 			$user['banstate'] = @$_POST['standing'];
-			$count = $psdb->query("SELECT COUNT(*) FROM ntbb_users WHERE ip = '".$psdb->escape($user['ip'])."' LIMIT 1");
+			$count = $psdb->query("SELECT COUNT(*) FROM ntbb_users WHERE ip = ".$psdb->escape($user['ip'])." LIMIT 1");
 			$count = $psdb->fetch($count);
 			$count = $count['COUNT(*)'];
 ?>

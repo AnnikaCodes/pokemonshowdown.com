@@ -7,62 +7,50 @@ include_once dirname(__FILE__).'/../config/config.inc.php';
 
 class NTBBDatabase {
 	var $db = null;
-	
+
 	var $server = null;
 	var $username = null;
 	var $password = null;
 	var $database = null;
-	var $prefix = null;
-	var $charset = null;
 	//var $queries = array();
-	
-	function NTBBDatabase($server, $username, $password, $database, $prefix, $charset) {
+
+	function NTBBDatabase($server, $username, $database, $password, $port) {
 		$this->server = $server;
 		$this->username = $username;
-		$this->password = $password;
 		$this->database = $database;
-		$this->prefix = $prefix;
-		$this->charset = $charset;
+		$this->password = $password;
+		$this->port = $port;
 	}
-	
+
 	function connect() {
 		if (!$this->db) {
-			$this->db = mysqli_connect($this->server, $this->username, $this->password, $this->database);
-			if ($this->charset) {
-				mysqli_set_charset($this->db, $this->charset);
-			}
+			$connection_string = "host='{$this->server}'";
+			$connection_string .= "username='{$this->username}'";
+			if ($this->password) $connection_string .= "password='{$this->password}'";
+			$connection_string .= "dbname='{$this->database}'";
+			$connection_string .= "port='{$this->port}'";
+			$this->db = pg_connect($connection_string);
 		}
 	}
 	function query($query) {
 		$this->connect();
 		//$this->queries[] = $query;
-		return mysqli_query($this->db, $query);
+		return pg_query($this->db, $query);
 	}
 	function fetch_assoc($resource) {
-		return mysqli_fetch_assoc($resource);
+		return pg_fetch_assoc($resource);
 	}
 	function fetch($resource) {
-		return mysqli_fetch_assoc($resource);
+		return pg_fetch_assoc($resource);
 	}
 	function escape($data) {
 		$this->connect();
-		return mysqli_real_escape_string($this->db, $data);
-	}
-	function error() {
-		if ($this->db) {
-			return mysqli_error($this->db);
-		}
-	}
-	function insert_id() {
-		if ($this->db) {
-			return mysqli_insert_id($this->db);
-		}
+		return pg_escape_literal($this->db, $data);
 	}
 }
 
 $psdb = new NTBBDatabase($psconfig['server'],
 		$psconfig['username'],
-		$psconfig['password'],
 		$psconfig['database'],
-		$psconfig['prefix'],
-		$psconfig['charset']);
+		$psconfig['password'] ?? false,
+		$psconfig['port'] ?? '5432');

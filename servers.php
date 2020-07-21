@@ -290,7 +290,7 @@ if (@$_POST['act'] === 'addserver') {
 $activeservers = [];
 $inactiveservers = [];
 
-$res = $psdb->query("SELECT `serverid`, `date`, `usercount` FROM `ntbb_userstats`");
+$res = $psdb->query("SELECT \"serverid\", \"date\", \"usercount\" FROM \"ntbb_userstats\"");
 while ($row = $psdb->fetch_assoc($res)) {
 	$serverid = $row['serverid'];
 	if (!isset($PokemonServers[$serverid])) continue;
