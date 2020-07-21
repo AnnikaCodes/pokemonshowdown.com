@@ -40,7 +40,7 @@ if ($lastmodified && (time() - $lastmodified < 60 * 10)) {
 } else {
 	include_once 'config/servers.inc.php';
 	include_once 'lib/ntbb-database.lib.php';
-	$query = $psdb->query("SELECT \"serverid\", \"date\", \"usercount\" FROM \"ntbb_userstats\"");
+	$query = $psdb->query("SELECT \"serverid\", \"date\", \"usercount\" FROM \"userstats\"");
 	$usercount = array();
 	$timenow = time();
 	while ($row = $psdb->fetch_assoc($query)) {

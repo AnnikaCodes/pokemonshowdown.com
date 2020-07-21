@@ -7,7 +7,7 @@ ini_set('display_startup_errors', TRUE);
 include_once 'config/config.inc.php';
 include_once 'routes.php';
 
-$ntbb_groups = array(
+$groups = array(
 	array(
 		'name' => 'Guest',
 		'symbol' => '',
@@ -180,12 +180,12 @@ if (!$user) {
 		if ($csrfOk && isset($_POST['group'])) {
 			$group = intval($_POST['group']);
 			if ($group != 3 && $group != 4 && $group != 5 && $group != 6) $group = 1;
-			$psdb->query("UPDATE ntbb_users SET \"group\" = ".intval($group)." WHERE userid = ".$psdb->escape($user['userid'])." LIMIT 1");
+			$psdb->query("UPDATE users SET \"group\" = ".intval($group)." WHERE userid = ".$psdb->escape($user['userid'])." LIMIT 1");
 			$user['group'] = $group;
 
-			$modlogentry = "Group changed to $group ({$ntbb_groups[$group]['name']})";
+			$modlogentry = "Group changed to $group ({$groups[$group]['name']})";
 			$psdb->query(
-				"INSERT INTO `{$psdb->prefix}usermodlog` (`userid`,`actorid`,`date`,`ip`,`entry`) VALUES (?, ?, ?, ?, ?)",
+				"INSERT INTO \"usermodlog\" (\"userid\",\"actorid\",\"date\",\"ip\",\"entry\") VALUES (?, ?, ?, ?, ?)",
 				[$user['userid'], $curuser['userid'], time(), $users->getIp(), $modlogentry]
 			);
 ?>
@@ -196,29 +196,29 @@ if (!$user) {
 		} else if ($csrfOk && isset($_POST['standing'])) {
 			$newStanding = intval($_POST['standing']);
 			$psdb->query(
-				"UPDATE {$psdb->prefix}users SET banstate = ? WHERE userid = ? LIMIT 1",
+				"UPDATE users SET banstate = ? WHERE userid = ? LIMIT 1",
 				[$newStanding, $user['userid']]
 			);
 			if ($newStanding === 30 || $newStanding === 100) {
 				$psdb->query(
-					"UPDATE ntbb_ladder SET elo = -abs(elo) WHERE userid = ?;",
+					"UPDATE ladder SET elo = -abs(elo) WHERE userid = ?;",
 					[$user['userid']]
 				);
 			} else {
 				$psdb->query(
-					"UPDATE ntbb_ladder SET elo = abs(elo) WHERE userid = ?;",
+					"UPDATE ladder SET elo = abs(elo) WHERE userid = ?;",
 					[$user['userid']]
 				);
 			}
 
 			$modlogentry = "Standing changed to $newStanding ({$STANDINGS[$newStanding]}): {$_POST['reason']}";
 			$psdb->query(
-				"INSERT INTO `{$psdb->prefix}usermodlog` (`userid`,`actorid`,`date`,`ip`,`entry`) VALUES (?, ?, ?, ?, ?)",
+				"INSERT INTO \"usermodlog\" (\"userid\",\"actorid\",\"date\",\"ip\",\"entry\") VALUES (?, ?, ?, ?, ?)",
 				[$user['userid'], $curuser['userid'], time(), $users->getIp(), $modlogentry]
 			);
 
 			$user['banstate'] = @$_POST['standing'];
-			$count = $psdb->query("SELECT COUNT(*) FROM ntbb_users WHERE ip = ".$psdb->escape($user['ip'])." LIMIT 1");
+			$count = $psdb->query("SELECT COUNT(*) FROM users WHERE ip = ".$psdb->escape($user['ip'])." LIMIT 1");
 			$count = $psdb->fetch($count);
 			$count = $count['COUNT(*)'];
 ?>
@@ -232,26 +232,26 @@ if (!$user) {
 			$newUserid = $users->userid($newName);
 			if (!$newUserid || $newUserid === $user['userid']) die("invalid username");
 			$psdb->query(
-				"UPDATE {$psdb->prefix}ladder SET userid = ? WHERE userid = ?",
+				"UPDATE ladder SET userid = ? WHERE userid = ?",
 				['_'.$user['userid'], $newUserid]
 			);
 			$psdb->query(
-				"UPDATE {$psdb->prefix}ladder SET userid = ?, username = ?, elo = abs(elo) WHERE userid = ?",
+				"UPDATE ladder SET userid = ?, username = ?, elo = abs(elo) WHERE userid = ?",
 				[$newUserid, $newName, $user['userid']]
 			);
 			$psdb->query(
-				"UPDATE {$psdb->prefix}ladder SET userid = ?, username = ?, elo = abs(elo) WHERE userid = ?",
+				"UPDATE ladder SET userid = ?, username = ?, elo = abs(elo) WHERE userid = ?",
 				[$user['userid'], $user['username'], '_'.$user['userid']]
 			);
 
 			$modlogentry = "Ladder swapped with " . $user['userid'];
 			$psdb->query(
-				"INSERT INTO `{$psdb->prefix}usermodlog` (`userid`,`actorid`,`date`,`ip`,`entry`) VALUES (?, ?, ?, ?, ?)",
+				"INSERT INTO \"usermodlog\" (\"userid\",\"actorid\",\"date\",\"ip\",\"entry\") VALUES (?, ?, ?, ?, ?)",
 				[$newUserid, $curuser['userid'], time(), $users->getIp(), $modlogentry]
 			);
 			$modlogentry = "Ladder swapped with " . $newUserid;
 			$psdb->query(
-				"INSERT INTO `{$psdb->prefix}usermodlog` (`userid`,`actorid`,`date`,`ip`,`entry`) VALUES (?, ?, ?, ?, ?)",
+				"INSERT INTO \"usermodlog\" (\"userid\",\"actorid\",\"date\",\"ip\",\"entry\") VALUES (?, ?, ?, ?, ?)",
 				[$user['userid'], $curuser['userid'], time(), $users->getIp(), $modlogentry]
 			);
 ?>
@@ -280,7 +280,7 @@ if (!$user) {
 				<label class="label"><strong>Group:</strong><br />
 				<select name="group" class="textbox"<?php if ($authLevel < 4) echo ' disabled'; ?>>
 <?php
-		foreach ($ntbb_groups as $i => $group) {
+		foreach ($groups as $i => $group) {
 			if (!$i) continue;
 ?>
 					<option value="<?php echo $i ?>"<?php if ($user['group'] == $i) echo ' selected="selected"'; ?>><?php echo $group['name']; ?></option>
@@ -342,12 +342,12 @@ if (!$user) {
 			$ctime = time();
 			$newStanding = $_POST['standing'];
 			$psdb->query(
-				"INSERT INTO ntbb_users (`userid`,`username`,`passwordhash`,`email`,`registertime`,`ip`,`banstate`) VALUES (?,?,'','',?,'',?)",
+				"INSERT INTO users (\"userid\",\"username\",\"passwordhash\",\"email\",\"registertime\",\"ip\",\"banstate\") VALUES (?,?,'','',?,'',?)",
 				[$user['userid'], $user['userid'], $ctime, $newStanding]
 			);
 			$modlogentry = "Created dummy user with standing $newStanding ({$STANDINGS[$newStanding]})";
 			$psdb->query(
-				"INSERT INTO `{$psdb->prefix}usermodlog` (`userid`,`actorid`,`date`,`ip`,`entry`) VALUES (?, ?, ?, ?, ?)",
+				"INSERT INTO \"usermodlog\" (\"userid\",\"actorid\",\"date\",\"ip\",\"entry\") VALUES (?, ?, ?, ?, ?)",
 				[$user['userid'], $curuser['userid'], time(), $users->getIp(), $modlogentry]
 			);
 			$user['banstate'] = $_POST['standing'];

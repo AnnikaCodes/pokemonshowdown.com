@@ -41,10 +41,10 @@ function printResultSet($res) {
 function printRecentResults() {
 	global $psdb;
 	$res = $psdb->query(
-		"SELECT `date`, `usercount`, `programid` " .
-		"FROM `ntbb_userstatshistory` " .
-		"WHERE (`date` > (UNIX_TIMESTAMP() - 60*60*24*3) * 1000) " .
-		"ORDER BY `programid` ASC, `date` ASC");
+		"SELECT \"date\", \"usercount\", \"programid\" " .
+		"FROM \"userstatshistory\" " .
+		"WHERE (\"date\" > (UNIX_TIMESTAMP() - 60*60*24*3) * 1000) " .
+		"ORDER BY \"programid\" ASC, \"date\" ASC");
 	printResultSet($res);
 }
 
@@ -54,17 +54,17 @@ function printJsonResults($startDate, $endDate) {
 	$maxResults = 1000;
 	// This should be approximately
 	//   ((date of last stat) - (date of first stat)) / $maxResults
-	$intervalLimit = 1000 * 60 * 60; 
+	$intervalLimit = 1000 * 60 * 60;
 	$interval = (int)(($endDate - $startDate) / $maxResults);
 	if ($interval > $intervalLimit) {
 		$interval = $intervalLimit;
 	}
 	$res = $psdb->query(
-		"SELECT `date`, `usercount`, `programid` " .
-		"FROM `ntbb_userstatshistory` " .
-		"WHERE `date` BETWEEN " . (int)$startDate . " AND " . (int)$endDate . " " .
-		"GROUP BY FLOOR(`date`/" . $interval . "), `programid` " .
-		"ORDER BY `programid` ASC, `date` ASC"
+		"SELECT \"date\", \"usercount\", \"programid\" " .
+		"FROM \"userstatshistory\" " .
+		"WHERE \"date\" BETWEEN " . (int)$startDate . " AND " . (int)$endDate . " " .
+		"GROUP BY FLOOR(\"date\"/" . $interval . "), \"programid\" " .
+		"ORDER BY \"programid\" ASC, \"date\" ASC"
 	);
 	printResultSet($res);
 }
@@ -76,10 +76,10 @@ if (isset($_REQUEST['format']) && ($_REQUEST['format'] === 'json')) {
 }
 
 $res = $psdb->query(
-	'SELECT `date`, `usercount` ' .
-	'FROM `ntbb_userstatshistory` ' .
-	'WHERE `programid`=\'showdown\' ' .
-	'ORDER BY `usercount` DESC ' .
+	'SELECT \"date\", \"usercount\" ' .
+	'FROM \"userstatshistory\" ' .
+	'WHERE \"programid\"=\'showdown\' ' .
+	'ORDER BY \"usercount\" DESC ' .
 	'LIMIT 1');
 
 $maxUsers = null;
