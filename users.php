@@ -220,7 +220,7 @@ if (!$user) {
 			$user['banstate'] = @$_POST['standing'];
 			$count = $psdb->query("SELECT COUNT(*) FROM users WHERE ip = ? LIMIT 1", [$user['ip']]);
 			$count = $psdb->fetch($count);
-			$count = $count['COUNT(*)'];
+			$count = $count['count'];
 ?>
 		<div style="border: 1px solid #DDAA88; padding: 0 1em; margin-bottom: 1em">
 			<p>Standing updated</p>
