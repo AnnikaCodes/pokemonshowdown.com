@@ -43,7 +43,7 @@ if ($lastmodified && (time() - $lastmodified < 60 * 10)) {
 	$query = $psdb->query("SELECT \"serverid\", \"date\", \"usercount\" FROM \"userstats\"");
 	$usercount = array();
 	$timenow = time();
-	while ($row = $psdb->fetch_assoc($query)) {
+	while ($row = $psdb->fetch($query)) {
 		if (($timenow - $row['date'] / 1000 > 60 * 30) && ($row['serverid'] !== 'showdown')) {
 			$usercount[$row['serverid']] = false; // inactive server
 		} else {

@@ -32,20 +32,15 @@ class NTBBDatabase {
 			$this->db = pg_connect($connection_string);
 		}
 	}
+
 	function query($query) {
 		$this->connect();
 		//$this->queries[] = $query;
 		return pg_query($this->db, $query);
 	}
-	function fetch_assoc($resource) {
-		return pg_fetch_assoc($resource);
-	}
+
 	function fetch($resource) {
 		return pg_fetch_assoc($resource);
-	}
-	function escape($data) {
-		$this->connect();
-		return pg_escape_literal($this->db, $data);
 	}
 }
 

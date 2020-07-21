@@ -124,7 +124,7 @@ if (!$ip) {
 		<p>Usermodlog entries</p>
 		<div class="ladder"><table>
 <?php
-	$usermodlog = $psdb->query("SELECT * FROM \"usermodlog\" WHERE \"ip\" = ".$psdb->escape($ip)());
+	$usermodlog = $psdb->query("SELECT * FROM \"usermodlog\" WHERE \"ip\" = ?", [$ip]);
 	while ($row = $psdb->fetch($usermodlog)) {
 		$entry = $row['entry'];
 		$fromindex = strpos($entry, " from: ");

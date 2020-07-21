@@ -15,7 +15,7 @@ function printResultSet($res) {
 	global $psdb;
 
 	echo '[{"label": "Pok&eacute;mon Showdown", "data": [';
-	$row = $psdb->fetch_assoc($res);
+	$row = $psdb->fetch($res);
 	$po = false;
 	$last = 0;
 	while (true) {
@@ -23,7 +23,7 @@ function printResultSet($res) {
 		$delta = $value - $last;
 		$last = $value;
 		echo '[' . $delta . ',' . $row['usercount'] . ']';
-		if ($row = $psdb->fetch_assoc($res)) {
+		if ($row = $psdb->fetch($res)) {
 			if (!$po && ($row['programid'] !== 'showdown')) {
 				echo ']}, {"label": "Pok&eacute;mon Online (<a target=\"_blank\" href=\"https://gist.github.com/cathyjf/5456648\">src</a>)", "data": [';
 				$last = 0;
@@ -84,7 +84,7 @@ $res = $psdb->query(
 
 $maxUsers = null;
 if ($res) {
-	$maxUsers = $psdb->fetch_assoc($res);
+	$maxUsers = $psdb->fetch($res);
 }
 
 $page = 'userstats';

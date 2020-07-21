@@ -180,7 +180,7 @@ if (!$user) {
 		if ($csrfOk && isset($_POST['group'])) {
 			$group = intval($_POST['group']);
 			if ($group != 3 && $group != 4 && $group != 5 && $group != 6) $group = 1;
-			$psdb->query("UPDATE users SET \"group\" = ".intval($group)." WHERE userid = ? LIMIT 1", [$user['userid']]);
+			$psdb->query("UPDATE users SET \"group\" = ".intval($group)." WHERE userid = ?", [$user['userid']]);
 			$user['group'] = $group;
 
 			$modlogentry = "Group changed to $group ({$groups[$group]['name']})";
@@ -196,7 +196,7 @@ if (!$user) {
 		} else if ($csrfOk && isset($_POST['standing'])) {
 			$newStanding = intval($_POST['standing']);
 			$psdb->query(
-				"UPDATE users SET banstate = ? WHERE userid = ? LIMIT 1",
+				"UPDATE users SET banstate = ? WHERE userid = ?",
 				[$newStanding, $user['userid']]
 			);
 			if ($newStanding === 30 || $newStanding === 100) {
@@ -218,7 +218,7 @@ if (!$user) {
 			);
 
 			$user['banstate'] = @$_POST['standing'];
-			$count = $psdb->query("SELECT COUNT(*) FROM users WHERE ip = ".$psdb->escape($user['ip'])." LIMIT 1");
+			$count = $psdb->query("SELECT COUNT(*) FROM users WHERE ip = ? LIMIT 1", [$user['ip']]);
 			$count = $psdb->fetch($count);
 			$count = $count['COUNT(*)'];
 ?>

@@ -291,7 +291,7 @@ $activeservers = [];
 $inactiveservers = [];
 
 $res = $psdb->query("SELECT \"serverid\", \"date\", \"usercount\" FROM \"userstats\"");
-while ($row = $psdb->fetch_assoc($res)) {
+while ($row = $psdb->fetch($res)) {
 	$serverid = $row['serverid'];
 	if (!isset($PokemonServers[$serverid])) continue;
 	if (@$PokemonServers[$serverid]['hidden']) continue;

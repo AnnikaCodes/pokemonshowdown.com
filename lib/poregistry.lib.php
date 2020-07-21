@@ -140,7 +140,10 @@ class PORegistry {
 		$maxusers = $servers[0]['numplayers'];
 		$time = time() * 1000;
 
-		$psdb->query("INSERT INTO \"userstatshistory\" (\"date\", \"usercount\", \"programid\") VALUES (" . $psdb->escape($time) . ", " . $psdb->escape($maxusers) . ", 'po')");
+		$psdb->query(
+			"INSERT INTO \"userstatshistory\" (\"date\", \"usercount\", \"programid\") VALUES (?, ?, 'po')",
+			[$time, $maxusers]
+		);
 	}
 
 }
