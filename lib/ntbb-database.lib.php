@@ -25,7 +25,7 @@ class NTBBDatabase {
 	function connect() {
 		if (!$this->db) {
 			$connection_string = "host={$this->server} ";
-			$connection_string .= "username={$this->username} ";
+			$connection_string .= "user={$this->username} ";
 			if ($this->password) $connection_string .= "password={$this->password} ";
 			$connection_string .= "dbname={$this->database} ";
 			$connection_string .= "port={$this->port}";
