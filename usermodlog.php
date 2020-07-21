@@ -148,7 +148,7 @@ if ($upperstaff) {
 			<p><small>[<?= date("M j, Y, g:ia", $user['registertime']); ?>] <?php if ($upperstaff) echo '[<a href="https://whatismyipaddress.com/ip/'.$user['ip'].'" target="_blank">'.$user['ip'].'</a>]' ?></small> Account created</p>
 <?php
 
-	$usermodlog = $psdb->query("SELECT * FROM \"usermodlog\" WHERE \"userid\" = ".$psdb->escape($userid).);
+	$usermodlog = $psdb->query("SELECT * FROM \"usermodlog\" WHERE \"userid\" = ".$psdb->escape($userid));
 	while ($row = $psdb->fetch($usermodlog)) {
 		$entry = $row['entry'];
 		$fromindex = strpos($entry, " from: ");
